@@ -1,0 +1,24 @@
+# Values used for the deployed application.
+service:
+  name: mongodb
+replicaCount: 3
+storageGi: 50Gi
+fsType: ext4
+pv0:  
+  region: 
+  zone:
+  name:
+  volumeID: 
+  claimName:
+pv1:  
+  region: 
+  zone:
+  name:
+  volumeID: 
+  claimName:
+pv2:  
+  region: 
+  zone:
+  name:
+  volumeID: 
+  claimName:
