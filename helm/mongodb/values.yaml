@@ -5,33 +5,28 @@ service:
   name: "" # The name of the service, should be defined in the specific app-configs folder.
 replicaCount: ""
 image:
-  repository: coco/mongodb
+  repository: coco/coco-mongodb
   pullPolicy: IfNotPresent
 resources:
   limits:
     memory: 2Gi
 storageGi: "" # how much storage for each node of the DB
+fsType: ext4 # file system type for the storage
 pv0: # persistent volume properties
   region: ""
   zone: ""
   name: ""
-  fsType: ext4
   volumeID: ""
-  capacityGi: ""
   claimName: ""
 pv1:  
   region: ""
   zone: ""
   name: ""
-  fsType: ext4
   volumeID: ""
-  capacityGi: ""
   claimName: ""
 pv2:  
   region: ""
   zone: ""
   name: ""
-  fsType: ext4
   volumeID: ""
-  capacityGi: ""
   claimName: ""
