@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  annotations:
+    kubernetes.io/createdby: aws-ebs-dynamic-provisioner
+    pv.kubernetes.io/bound-by-controller: "yes"
+    pv.kubernetes.io/provisioned-by: kubernetes.io/aws-ebs
+  labels:
+    failure-domain.beta.kubernetes.io/region: {{ .Values.pv0.region }} 
+    failure-domain.beta.kubernetes.io/zone: {{ .Values.pv0.zone }} 
+  name: {{ .Values.pv0.name }} 
+  namespace: "default"
+spec:
+  accessModes:
+  - ReadWriteOnce
+  awsElasticBlockStore:
+    fsType: {{ .Values.fsType }} 
+    volumeID: {{ .Values.pv0.volumeID }} 
+  capacity:
+    storage: {{ .Values.storageGi }} 
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: {{ .Values.pv0.claimName }} 
+    namespace: default
+  persistentVolumeReclaimPolicy: Retain

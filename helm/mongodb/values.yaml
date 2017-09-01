@@ -1,0 +1,32 @@
+# Default values for mongodb.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+service:
+  name: "" # The name of the service, should be defined in the specific app-configs folder.
+replicaCount: ""
+image:
+  repository: coco/coco-mongodb
+  pullPolicy: IfNotPresent
+resources:
+  limits:
+    memory: 2Gi
+storageGi: "" # how much storage for each node of the DB
+fsType: ext4 # file system type for the storage
+pv0: # persistent volume properties
+  region: ""
+  zone: ""
+  name: ""
+  volumeID: ""
+  claimName: ""
+pv1:  
+  region: ""
+  zone: ""
+  name: ""
+  volumeID: ""
+  claimName: ""
+pv2:  
+  region: ""
+  zone: ""
+  name: ""
+  volumeID: ""
+  claimName: ""
