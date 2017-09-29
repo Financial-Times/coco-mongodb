@@ -1,0 +1,24 @@
+# Values used for the deployed application.
+service:
+  name: mongodb
+replicaCount: 3
+storageGi: 50Gi
+fsType: ext4
+pv0:  
+  region: eu-west-1
+  zone: eu-west-1a
+  name: mongodb-0-vol
+  volumeID: aws://eu-west-1a/vol-0f2a7be47b6775d7f
+  claimName: mongo-persistent-mongodb-0
+pv1:  
+  region: eu-west-1
+  zone: eu-west-1b
+  name: mongodb-1-vol
+  volumeID: aws://eu-west-1b/vol-0122eb7f3bb5befd3
+  claimName: mongo-persistent-mongodb-1
+pv2:  
+  region: eu-west-1
+  zone: eu-west-1c
+  name: mongodb-2-vol
+  volumeID: aws://eu-west-1c/vol-068ea9b0e9ea387bb
+  claimName: mongo-persistent-mongodb-2
