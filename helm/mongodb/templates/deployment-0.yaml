@@ -1,0 +1,43 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{.Values.service.name}}-0
+  labels:
+    chart: "{{ .Chart.Name | trunc 63 }}"
+    chartVersion: "{{ .Chart.Version | trunc 63 }}"
+    visualize: "true"
+    app: {{ .Values.service.name }}-0
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.service.name }}-0
+  template:
+    metadata:
+      labels:
+        app: {{.Values.service.name}}-0
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+      - name: {{.Values.service.name}} 
+        image: "{{ .Values.image.repository }}:{{ .Chart.Version }}"
+        resources:
+{{ toYaml .Values.resources | indent 12 }}
+        ports:
+        - containerPort: 27017
+        - containerPort: 28017
+        livenessProbe:
+          tcpSocket:
+            port: 27017
+          initialDelaySeconds: 15
+        volumeMounts:
+        - name: mongo-persistent-0
+          mountPath: /data/db
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/bash", "-c", 'printf "use admin\ndb.shutdownServer()" | mongo']
+      volumes:
+       - name: mongo-persistent-0
+         persistentVolumeClaim:
+			    claimName: "{{ .Values.service.name }}-pvc-0"

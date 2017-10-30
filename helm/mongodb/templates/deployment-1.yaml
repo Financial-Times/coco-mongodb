@@ -1,21 +1,21 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{.Values.service.name}} 
+  name: {{.Values.service.name}}-1
   labels:
     chart: "{{ .Chart.Name | trunc 63 }}"
     chartVersion: "{{ .Chart.Version | trunc 63 }}"
     visualize: "true"
-    app: {{ .Values.service.name }}
+    app: {{ .Values.service.name }}-1
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: 1
   selector:
     matchLabels:
-      app: {{ .Values.service.name }}
+      app: {{ .Values.service.name }}-1
   template:
     metadata:
       labels:
-        app: {{.Values.service.name}} 
+        app: {{.Values.service.name}}-1
     spec:
       terminationGracePeriodSeconds: 30
       containers:
@@ -31,19 +31,13 @@ spec:
             port: 27017
           initialDelaySeconds: 15
         volumeMounts:
-        - name: mongo-persistent
+        - name: mongo-persistent-1
           mountPath: /data/db
         lifecycle:
           preStop:
             exec:
               command: ["/bin/bash", "-c", 'printf "use admin\ndb.shutdownServer()" | mongo']
-  volumeClaimTemplates:
-  - metadata:
-      name: mongo-persistent
-      annotations:
-        volume.alpha.kubernetes.io/storage-class: standard
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: {{ .Values.storageGi }} 
+      volumes:
+       - name: mongo-persistent-1
+         persistentVolumeClaim:
+			    claimName: "{{ .Values.service.name }}-pvc-1"
