@@ -38,6 +38,6 @@ spec:
             exec:
               command: ["/bin/bash", "-c", 'printf "use admin\ndb.shutdownServer()" | mongo']
       volumes:
-       - name: mongo-persistent-0
-         persistentVolumeClaim:
-			    claimName: "{{ .Values.service.name }}-pvc-0"
+      - name: mongo-persistent-0
+        persistentVolumeClaim:
+			  claimName: "{{ .Values.service.name }}-pvc-0"
