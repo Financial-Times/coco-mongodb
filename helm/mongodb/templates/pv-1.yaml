@@ -8,6 +8,7 @@ metadata:
   labels:
     failure-domain.beta.kubernetes.io/region: {{ .Values.pv1.region }} 
     failure-domain.beta.kubernetes.io/zone: {{ .Values.pv1.zone }} 
+    provisioned-for: {{.Values.service.name}}-1
   name: {{ .Values.pv1.name }} 
   namespace: "default"
 spec:
