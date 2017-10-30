@@ -1,16 +1,21 @@
-apiVersion: apps/v1beta1
-kind: StatefulSet
+apiVersion: extensions/v1beta1
+kind: Deployment
 metadata:
   name: {{.Values.service.name}} 
+  labels:
+    chart: "{{ .Chart.Name | trunc 63 }}"
+    chartVersion: "{{ .Chart.Version | trunc 63 }}"
+    visualize: "true"
+    app: {{ .Values.service.name }}
 spec:
-  serviceName: {{.Values.service.name}} 
-  replicas: {{.Values.replicaCount}} 
+  replicas: {{ .Values.replicaCount }}
+    selector:
+    matchLabels:
+      app: {{ .Values.service.name }}
   template:
     metadata:
       labels:
         app: {{.Values.service.name}} 
-      annotations:
-        pod.alpha.kubernetes.io/initialized: "true"
     spec:
       terminationGracePeriodSeconds: 30
       containers:
