@@ -40,4 +40,4 @@ spec:
       volumes:
       - name: mongo-persistent-2
         persistentVolumeClaim:
-			  claimName: "{{ .Values.service.name }}-pvc-2"
+        claimName: "{{ .Values.service.name }}-pvc-2"
