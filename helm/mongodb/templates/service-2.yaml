@@ -17,6 +17,5 @@ spec:
   - name: admin
     port: 28017
     targetPort: 28017
-  clusterIP: None
   selector:
     app: {{ .Values.service.name }}-2

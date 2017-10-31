@@ -19,13 +19,13 @@ spec:
     spec:
       terminationGracePeriodSeconds: 30
       initContainers:
-        - name: waitfordns
+        - name: waitForDns
           image: "alpine:3.6"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
             - /bin/sh
             - -c
-            - 'sleep 60'
+            - 'sleep 30'
       containers:
       - name: {{.Values.service.name}} 
         image: "{{ .Values.image.repository }}:{{ .Chart.Version }}"
