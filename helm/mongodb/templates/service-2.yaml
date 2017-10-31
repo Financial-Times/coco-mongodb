@@ -7,8 +7,6 @@ metadata:
     chartVersion: "{{ .Chart.Version | trunc 63 }}"
     app: {{.Values.service.name}}-2
     visualize: "true"
-  annotations:
-    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
 spec:
   ports:
   - name: work
@@ -17,5 +15,6 @@ spec:
   - name: admin
     port: 28017
     targetPort: 28017
+  clusterIP: None
   selector:
     app: {{ .Values.service.name }}-2
