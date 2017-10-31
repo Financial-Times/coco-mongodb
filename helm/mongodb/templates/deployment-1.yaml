@@ -25,7 +25,7 @@ spec:
           command:
             - /bin/sh
             - -c
-            - 'sleep 30'
+            - "i=0; while [ $i -lt 120 ]; do ping -c1 {{.Values.service.name}}-1 && break; let i=i+1; sleep 1; done"
       containers:
       - name: {{.Values.service.name}} 
         image: "{{ .Values.image.repository }}:{{ .Chart.Version }}"
