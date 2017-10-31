@@ -23,7 +23,9 @@ spec:
           image: "alpine:3.6"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
-            - sleep 60
+            - /bin/sh
+            - -c
+            - 'sleep 60'
       containers:
       - name: {{.Values.service.name}} 
         image: "{{ .Values.image.repository }}:{{ .Chart.Version }}"
