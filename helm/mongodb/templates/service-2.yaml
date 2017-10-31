@@ -7,6 +7,8 @@ metadata:
     chartVersion: "{{ .Chart.Version | trunc 63 }}"
     app: {{.Values.service.name}}-2
     visualize: "true"
+  annotations:
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
 spec:
   ports:
   - name: work
