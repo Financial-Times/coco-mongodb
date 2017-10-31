@@ -19,7 +19,7 @@ spec:
     spec:
       terminationGracePeriodSeconds: 30
       initContainers:
-        - name: waitForDns
+        - name: waitfordns
           image: "alpine:3.6"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
