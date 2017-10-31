@@ -18,6 +18,12 @@ spec:
         app: {{.Values.service.name}}-0
     spec:
       terminationGracePeriodSeconds: 30
+      initcontainers:
+        - name: waitfordns
+          image: "alpine:3.6"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - sleep 60
       containers:
       - name: {{.Values.service.name}} 
         image: "{{ .Values.image.repository }}:{{ .Chart.Version }}"
