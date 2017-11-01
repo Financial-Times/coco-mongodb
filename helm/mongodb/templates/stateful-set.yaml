@@ -22,9 +22,12 @@ spec:
         - containerPort: 27017
         - containerPort: 28017
         livenessProbe:
-          tcpSocket:
-            port: 27017
           initialDelaySeconds: 15
+          exec:
+            command:
+            - /bin/bash
+            - -c
+            - ping -c 1 mongodb-0.mongodb && ping -c 1 mongodb-1.mongodb && ping -c 1 mongodb-2.mongodb
         volumeMounts:
         - name: mongo-persistent
           mountPath: /data/db
