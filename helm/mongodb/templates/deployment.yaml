@@ -1,38 +1,41 @@
+{{- $values :=  .Values }}
+{{- $chart := .Chart }}
+
 {{- range tuple "0" "1" "2" }}
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{.Values.service.name}}-{{ . }}
+  name: {{ $values.service.name }}-{{ . }}
   labels:
-    chart: "{{ .Chart.Name | trunc 63 }}"
-    chartVersion: "{{ .Chart.Version | trunc 63 }}"
+    chart: "{{ $chart.Name | trunc 63 }}"
+    chartVersion: "{{ $chart.Version | trunc 63 }}"
     visualize: "true"
-    app: {{ .Values.service.name }}-{{ . }}
+    app: {{ $values.service.name }}-{{ . }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Values.service.name }}-{{ . }}
+      app: {{ $values.service.name }}-{{ . }}
   template:
     metadata:
       labels:
-        app: {{.Values.service.name}}-{{ . }}
+        app: {{ $values.service.name }}-{{ . }}
     spec:
       terminationGracePeriodSeconds: 30
       initContainers:
         - name: waitfordns
           image: "alpine:3.6"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          imagePullPolicy: {{ $values.image.pullPolicy }}
           command:
             - /bin/sh
             - -c
-            - "i=0; while [ $i -lt 120 ]; do ping -c1 {{.Values.service.name}}-{{ . }} && break; let i=i+1; sleep 1; done"
+            - "i=0; while [ $i -lt 120 ]; do ping -c1 {{ $values.service.name }}-{{ . }} && break; let i=i+1; sleep 1; done"
       containers:
-      - name: {{.Values.service.name}} 
-        image: "{{ .Values.image.repository }}:{{ .Chart.Version }}"
+      - name: {{ $values.service.name }} 
+        image: "{{ $values.image.repository }}:{{ $chart.Version }}"
         resources:
-{{ toYaml .Values.resources | indent 12 }}
+{{ toYaml $values.resources | indent 12 }}
         ports:
         - containerPort: 27017
         - containerPort: 28017
@@ -50,5 +53,5 @@ spec:
       volumes:
       - name: mongo-persistent-{{ . }}
         persistentVolumeClaim:
-          claimName: "{{ .Values.service.name }}-pvc-{{ . }}"
+          claimName: "{{ $values.service.name }}-pvc-{{ . }}"
 {{- end }}

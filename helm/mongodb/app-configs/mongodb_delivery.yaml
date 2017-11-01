@@ -4,21 +4,22 @@ service:
 replicaCount: 3
 storageGi: 50Gi
 fsType: ext4
-pv0:  
-  region: eu-west-1
-  zone: eu-west-1a
-  name: mongodb-0-vol
-  volumeID: aws://eu-west-1a/vol-0f41bc74177761268
-  claimName: mongodb-pvc-0
-pv1:  
-  region: eu-west-1
-  zone: eu-west-1b
-  name: mongodb-1-vol
-  volumeID: aws://eu-west-1b/vol-0583d947a220fddb3
-  claimName: mongodb-pvc-1
-pv2:  
-  region: eu-west-1
-  zone: eu-west-1c
-  name: mongodb-2-vol
-  volumeID: aws://eu-west-1c/vol-063166f5c89299da4
-  claimName: mongodb-pvc-2
+pvs:
+  - pv0:
+      region: eu-west-1
+      zone: eu-west-1a
+      name: mongodb-0-vol
+      volumeID: aws://eu-west-1a/vol-0f41bc74177761268
+      claimName: mongodb-pvc-0
+  - pv1:
+      region: eu-west-1
+      zone: eu-west-1b
+      name: mongodb-1-vol
+      volumeID: aws://eu-west-1b/vol-0583d947a220fddb3
+      claimName: mongodb-pvc-1
+  - pv2:
+      region: eu-west-1
+      zone: eu-west-1c
+      name: mongodb-2-vol
+      volumeID: aws://eu-west-1c/vol-063166f5c89299da4
+      claimName: mongodb-pvc-2
