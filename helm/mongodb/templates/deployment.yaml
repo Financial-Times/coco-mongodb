@@ -1,21 +1,23 @@
+{{- range tuple "0" "1" "2" }}
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{.Values.service.name}}-1
+  name: {{.Values.service.name}}-{{ . }}
   labels:
     chart: "{{ .Chart.Name | trunc 63 }}"
     chartVersion: "{{ .Chart.Version | trunc 63 }}"
     visualize: "true"
-    app: {{ .Values.service.name }}-1
+    app: {{ .Values.service.name }}-{{ . }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Values.service.name }}-1
+      app: {{ .Values.service.name }}-{{ . }}
   template:
     metadata:
       labels:
-        app: {{.Values.service.name}}-1
+        app: {{.Values.service.name}}-{{ . }}
     spec:
       terminationGracePeriodSeconds: 30
       initContainers:
@@ -25,7 +27,7 @@ spec:
           command:
             - /bin/sh
             - -c
-            - "i=0; while [ $i -lt 120 ]; do ping -c1 {{.Values.service.name}}-1 && break; let i=i+1; sleep 1; done"
+            - "i=0; while [ $i -lt 120 ]; do ping -c1 {{.Values.service.name}}-{{ . }} && break; let i=i+1; sleep 1; done"
       containers:
       - name: {{.Values.service.name}} 
         image: "{{ .Values.image.repository }}:{{ .Chart.Version }}"
@@ -39,13 +41,14 @@ spec:
             port: 27017
           initialDelaySeconds: 15
         volumeMounts:
-        - name: mongo-persistent-1
+        - name: mongo-persistent-{{ . }}
           mountPath: /data/db
         lifecycle:
           preStop:
             exec:
               command: ["/bin/bash", "-c", 'printf "use admin\ndb.shutdownServer()" | mongo']
       volumes:
-      - name: mongo-persistent-1
+      - name: mongo-persistent-{{ . }}
         persistentVolumeClaim:
-          claimName: "{{ .Values.service.name }}-pvc-1"
+          claimName: "{{ .Values.service.name }}-pvc-{{ . }}"
+{{- end }}

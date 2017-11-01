@@ -1,3 +1,5 @@
+{{- range tuple "0" "1" "2" }}
+---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -6,22 +8,23 @@ metadata:
     pv.kubernetes.io/bound-by-controller: "yes"
     pv.kubernetes.io/provisioned-by: kubernetes.io/aws-ebs
   labels:
-    failure-domain.beta.kubernetes.io/region: {{ .Values.pv0.region }} 
-    failure-domain.beta.kubernetes.io/zone: {{ .Values.pv0.zone }} 
-    provisioned-for: {{.Values.service.name}}-0
-  name: {{ .Values.pv0.name }} 
+    failure-domain.beta.kubernetes.io/region: {{ .Values.pv{{ . }}.region }}
+    failure-domain.beta.kubernetes.io/zone: {{ .Values.pv{{ . }}.zone }}
+    provisioned-for: {{.Values.service.name}}-{{ . }}
+  name: {{ .Values.pv{{ . }}.name }}
   namespace: "default"
 spec:
   accessModes:
   - ReadWriteOnce
   awsElasticBlockStore:
-    fsType: {{ .Values.fsType }} 
-    volumeID: {{ .Values.pv0.volumeID }} 
+    fsType: {{ .Values.fsType }}
+    volumeID: {{ .Values.pv{{ . }}.volumeID }}
   capacity:
-    storage: {{ .Values.storageGi }} 
+    storage: {{ .Values.storageGi }}
   claimRef:
     apiVersion: v1
     kind: PersistentVolumeClaim
-    name: {{ .Values.pv0.claimName }} 
+    name: {{ .Values.pv{{ . }}.claimName }}
     namespace: default
   persistentVolumeReclaimPolicy: Retain
+{{- end }}

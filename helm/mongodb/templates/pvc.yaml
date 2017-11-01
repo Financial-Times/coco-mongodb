@@ -1,7 +1,9 @@
+{{- range tuple "0" "1" "2" }}
+---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: "{{ .Values.service.name }}-pvc-2"
+  name: "{{ .Values.service.name }}-pvc-{{ . }}"
 spec:
   accessModes:
     - ReadWriteOnce
@@ -10,4 +12,5 @@ spec:
       storage: {{ .Values.storageGi }}
   selector:
     matchLabels:
-      provisioned-for: {{.Values.service.name}}-2
+      provisioned-for: {{.Values.service.name}}-{{ . }}
+{{- end }}
