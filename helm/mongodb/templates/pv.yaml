@@ -23,10 +23,5 @@ spec:
     volumeID: {{ $pv.volumeID }}
   capacity:
     storage: {{ $values.storageGi }}
-  claimRef:
-    apiVersion: v1
-    kind: PersistentVolumeClaim
-    name: {{ $pv.claimName }}
-    namespace: default
   persistentVolumeReclaimPolicy: Retain
 {{- end }}

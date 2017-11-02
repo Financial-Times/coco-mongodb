@@ -9,14 +9,11 @@ pvs:
       zone: eu-west-1a
       name: mongodb-0-vol
       volumeID: aws://eu-west-1a/vol-0ee205726be602c9b
-      claimName: mongodb-pvc-0
     - region: eu-west-1
       zone: eu-west-1b
       name: mongodb-1-vol
       volumeID: aws://eu-west-1b/vol-0d24566770b5fb19c
-      claimName: mongodb-pvc-1
     - region: eu-west-1
       zone: eu-west-1c
       name: mongodb-2-vol
       volumeID: aws://eu-west-1c/vol-0442cd43f86480347
-      claimName: mongodb-pvc-2
