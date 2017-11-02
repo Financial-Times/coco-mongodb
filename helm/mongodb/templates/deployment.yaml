@@ -23,6 +23,13 @@ spec:
         app: {{ $values.service.name }}-{{ . }}
     spec:
       terminationGracePeriodSeconds: 30
+      tolerations:
+      # Making sure that Mongo will be scheduled on dedicated nodes. These nodes are tainted by the provisioner.
+      - key: "dedicated"
+        operator: "Equal"
+        value: "mongo"
+        effect: "NoSchedule"
+
       initContainers:
         - name: waitfordns
           image: "alpine:3.6"
