@@ -38,7 +38,6 @@ spec:
                 operator: In
                 values:
                 - mongo-worker
-
       initContainers:
         - name: waitfordns
           image: "alpine:3.6"
