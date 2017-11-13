@@ -16,7 +16,7 @@ spec:
         image: coco/coco-mongodb-configurator:v0.1.0
         env:
         - name: ARGS
-        valueFrom:
-          configMapKeyRef:
-            name: global-config
-            key: mongo.addresses.with.admin.port
+          valueFrom:
+            configMapKeyRef:
+              name: global-config
+              key: mongo.addresses.with.admin.port
