@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mongo-configurator
+  labels:
+    app: mongo-configurator
+    visualize: "true"
+  annotations:
+    "helm.sh/hook": post-install
+spec:
+  template:
+    spec:
+      restartPolicy: "OnFailure"
+      containers:
+      - name: mongo-configurator
+        image: coco/coco-mongodb-configurator:v0.1.0
+        env:
+        - name: ARGS
+        valueFrom:
+          configMapKeyRef:
+            name: global-config
+            key: mongo.addresses.with.admin.port
