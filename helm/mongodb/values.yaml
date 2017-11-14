@@ -10,21 +10,4 @@ image:
 resources:
   limits:
     memory: 2Gi
-storageGi: "" # how much storage for each node of the DB
-fsType: ext4 # file system type for the storage
-pvs:
-    - region: ""
-      zone: ""
-      name: ""
-      volumeID: ""
-      claimName: ""
-    - region: ""
-      zone: ""
-      name: ""
-      volumeID: ""
-      claimName: ""
-    - region: ""
-      zone: ""
-      name: ""
-      volumeID: ""
-      claimName: ""
+storageGi: 50Gi # how much storage for each node of the DB
