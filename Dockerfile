@@ -1,4 +1,4 @@
-FROM mongo:3.0.2
+FROM mongo:3.2.18
 
 ADD mongod.conf /etc/
 
