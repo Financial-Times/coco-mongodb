@@ -3,11 +3,12 @@
 # Declare variables to be passed into your templates.
 service:
   name: "" # The name of the service, should be defined in the specific app-configs folder.
-replicaCount: ""
 image:
   repository: coco/coco-mongodb
   pullPolicy: IfNotPresent
 resources:
   limits:
-    memory: 2Gi
+    memory: 6Gi
+  requests:
+    memory: 4Gi
 storageGi: 50Gi # how much storage for each node of the DB
