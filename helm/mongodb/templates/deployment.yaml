@@ -57,7 +57,7 @@ spec:
         livenessProbe:
           tcpSocket:
             port: 27017
-          initialDelaySeconds: 15
+          initialDelaySeconds: 60
         volumeMounts:
         - name: mongo-persistent-{{ . }}
           mountPath: /data/db
