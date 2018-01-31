@@ -9,9 +9,6 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  resources:
-    requests:
-      storage: {{ $values.storageGi }}
   selector:
     matchLabels:
       provisioned-for: {{ $values.service.name}}-{{ . }}
