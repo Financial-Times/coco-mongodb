@@ -28,7 +28,7 @@ If, for some reason (like restore debug) you need access to the data, but withou
 Here are the steps for it:
 1. Stop the mongo instance
     ```
-    kc scale deployment mongodb-x
+    kc scale deployment mongodb-x --replicas 0
     ```
 1. Create a file `mongo-debug-x.yaml` with the following contents:
     ```
