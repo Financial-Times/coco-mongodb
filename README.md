@@ -1,7 +1,7 @@
 # MongoDB wrapper
 MongoDB wrapper that runs in a 3 node replicaset.
 
-For keeping the peristent data it uses 3 k8s Persistent Volumes, one for each replicaset.
+For keeping the persistent data it uses 3 k8s Persistent Volumes, one for each replicaset.
 
 ### Mongo configurator
 On the first start with empty data, MongoDB needs configuration to run in a replica set.
