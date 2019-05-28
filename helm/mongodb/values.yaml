@@ -11,3 +11,4 @@ resources:
     memory: 6Gi
   requests:
     memory: 4Gi
+storageGi: 50Gi # how much storage for each node of the DB
