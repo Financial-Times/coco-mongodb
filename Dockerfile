@@ -1,4 +1,4 @@
-FROM mongo:3.4.17
+FROM mongo:3.4.21-xenial
 
 ADD mongod.conf /etc/
 
