@@ -1,4 +1,4 @@
-FROM mongo:3.4.9-jessie
+FROM mongo:3.4.20-jessie
 
 ADD mongod.conf /etc/
 
