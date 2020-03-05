@@ -51,13 +51,6 @@ No
 
 No
 
-## Dependents
-
-- upp-prod-delivery-eu
-- upp-prod-delivery-us
-- upp-prod-publish-eu
-- upp-prod-publish-us
-
 ## Failover Architecture Type
 
 ActivePassive
