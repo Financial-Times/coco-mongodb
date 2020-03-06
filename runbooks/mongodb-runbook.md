@@ -100,7 +100,7 @@ None
 
 None
 
-## Healthchecks
+## Monitoring
 
 - https://upp-prod-publish-us.upp.ft.com/__health
 - https://upp-prod-publish-eu.upp.ft.com/__health
