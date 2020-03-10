@@ -109,7 +109,7 @@ None
 
 ## First Line Troubleshooting
 
-https://sites.google.com/a/ft.com/universal-publishing/ops-guides/first-line-troubleshooting
+https://github.com/Financial-Times/upp-docs/tree/master/guides/ops/first-line-troubleshooting
 
 ## Second Line Troubleshooting
 
