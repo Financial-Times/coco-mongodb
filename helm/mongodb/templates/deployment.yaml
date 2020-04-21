@@ -23,6 +23,23 @@ spec:
         app: {{ $values.service.name }}-{{ . }}
     spec:
       terminationGracePeriodSeconds: 30
+{{- if $values.eksCluster }}
+      tolerations:
+      # Making sure that Mongo will be scheduled on dedicated nodes. These nodes are tainted and labeled by the provisioner.
+      - key: "ng-mongo"
+        operator: "Equal"
+        value: "false"
+        effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-role.kubernetes.io/ng-mongo
+                operator: In
+                values:
+                - "true"
+{{- else }}
       tolerations:
       # Making sure that Mongo will be scheduled on dedicated nodes. These nodes are tainted and labeled by the provisioner.
       - key: "dedicated"
@@ -38,6 +55,7 @@ spec:
                 operator: In
                 values:
                 - mongo-worker
+{{- end }}
       initContainers:
         - name: waitfordns
           image: "alpine:3.6"
@@ -47,7 +65,7 @@ spec:
             - -c
             - "i=0; while [ $i -lt 120 ]; do ping -c1 {{ $values.service.name }}-{{ . }} && break; let i=i+1; sleep 1; done"
       containers:
-      - name: {{ $values.service.name }} 
+      - name: {{ $values.service.name }}
         image: "{{ $values.image.repository }}:{{ $chart.Version }}"
         resources:
 {{ toYaml $values.resources | indent 12 }}
