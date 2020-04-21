@@ -1,37 +1,47 @@
 # MongoDB wrapper
+
 MongoDB wrapper that runs in a 3 node replicaset.
 
-For keeping the persistent data it uses 3 k8s Persistent Volumes, one for each replicaset.
+For keeping the persistent data it uses 3 k8s Persistent Volumes, one for each
+replicaset. The PVs (EBS volumes) are managed manually.
+
 
 ### Mongo configurator
-On the first start with empty data, MongoDB needs configuration to run in a replica set.
 
-On a Kubernetes cluster this is achieved automatically by a [mongo configurator job](helm/mongodb/templates/mongo-configurator-job.yaml) 
+On the first start with empty data, MongoDB needs configuration to run in a
+replica set. On a Kubernetes cluster this is achieved automatically by a [mongo
+configurator job](helm/mongodb/templates/mongo-configurator-job.yaml)
 that runs `only` on the first `helm install` in a cluster.
 
-## Useful information:
-[Ops panic guide](https://sites.google.com/a/ft.com/universal-publishing/ops-guides/mongodb-panic-guide)
-
 ## Troubleshooting
+
 ### Access to the data
+
 You can have access to the data by entering the pod and looking into `/data/db`
-```
+
+```sh
 kubectl exec -it mongodb-x-...... /bin/bash
 #inside the pod
 cd /data/db
-
-``` 
+```
 
 ### Access to the data without mongodb running
-If, for some reason (like restore debug) you need access to the data, but without the instance running you can use a temporary pod to mount mongo's persistent volume.
+
+If, for some reason (like restore debug) you need access to the data, but
+without the instance running you can use a temporary pod to mount mongo's
+persistent volume.
 
 Here are the steps for it:
+
 1. Stop the mongo instance
-    ```
+
+    ```sh
     kc scale deployment mongodb-x --replicas 0
     ```
+
 1. Create a file `mongo-debug-x.yaml` with the following contents:
-    ```
+
+    ```yaml
     apiVersion: v1
     kind: Pod
     metadata:
@@ -65,13 +75,17 @@ Here are the steps for it:
          persistentVolumeClaim:
            claimName: "mongodb-pvc-x"
     ```
+
 1. Deploy the pod:
-    ```
+
+    ```sh
     kubectl apply -f mongo-debug-x.yaml
-    ```    
-1. Enter the pod and find the volume mounted in /data/db
     ```
+
+1. Enter the pod and find the volume mounted in /data/db
+
+    ```sh
     kubectl exec -it mongo-x-debug /bin/bash
     #inside the pod
-    cd /data/db    
+    cd /data/db
     ```
