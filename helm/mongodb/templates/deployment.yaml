@@ -3,7 +3,7 @@
 
 {{- range tuple "0" "1" "2" }}
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ $values.service.name }}-{{ . }}
