@@ -3,7 +3,7 @@
 
 {{- range tuple "0" "1" "2" }}
 ---
-{{- if .$values.eksCluster }}
+{{- if $values.eksCluster }}
 apiVersion: apps/v1
 {{- else }}
 apiVersion: extensions/v1beta1
