@@ -3,11 +3,7 @@
 
 {{- range tuple "0" "1" "2" }}
 ---
-{{- if $values.eksCluster }}
 apiVersion: apps/v1
-{{- else }}
-apiVersion: extensions/v1beta1
-{{- end }}
 kind: Deployment
 metadata:
   name: {{ $values.service.name }}-{{ . }}
@@ -27,7 +23,6 @@ spec:
         app: {{ $values.service.name }}-{{ . }}
     spec:
       terminationGracePeriodSeconds: 30
-{{- if $values.eksCluster }}
       tolerations:
       # Making sure that Mongo will be scheduled on dedicated nodes. These nodes are tainted and labeled by the provisioner.
       - key: "mongo"
@@ -43,23 +38,6 @@ spec:
                 operator: In
                 values:
                 - "mongo"
-{{- else }}
-      tolerations:
-      # Making sure that Mongo will be scheduled on dedicated nodes. These nodes are tainted and labeled by the provisioner.
-      - key: "dedicated"
-        operator: "Equal"
-        value: "mongo"
-        effect: "NoSchedule"
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: kube-aws.coreos.com/role
-                operator: In
-                values:
-                - mongo-worker
-{{- end }}
       initContainers:
         - name: waitfordns
           image: "alpine:3.6"
