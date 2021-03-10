@@ -1,7 +1,7 @@
 {{- $values :=  .Values }}
 {{- $chart := .Chart }}
 
-{{- range tuple "2" }}
+{{- range tuple "0" }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -48,7 +48,7 @@ spec:
             - "i=0; while [ $i -lt 120 ]; do ping -c1 {{ $values.service.name }}-{{ . }} && break; let i=i+1; sleep 1; done"
       containers:
       - name: {{ $values.service.name }}
-        image: "{{ $values.image.repository }}:{{ $chart.Version }}"
+        image: "{{ $values.image.repository }}:3.4.21-dev-filesystem-size-rc7"
         resources:
 {{ toYaml $values.resources | indent 12 }}
         ports:
