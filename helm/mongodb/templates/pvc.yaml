@@ -1,6 +1,6 @@
 {{- $values :=  .Values }}
 
-{{- range tuple "0" "1" "2" }}
+{{- range tuple "2" }}
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
