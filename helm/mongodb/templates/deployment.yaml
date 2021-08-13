@@ -1,6 +1,149 @@
 {{- $values :=  .Values }}
 {{- $chart := .Chart }}
 
+{{ if .Values.leader }}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $values.service.name }}-0
+  labels:
+    chart: "{{ $chart.Name | trunc 63 }}"
+    chartVersion: "{{ $chart.Version | trunc 63 }}"
+    visualize: "true"
+    app: {{ $values.service.name }}-0
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ $values.service.name }}-0
+  template:
+    metadata:
+      labels:
+        app: {{ $values.service.name }}-0
+    spec:
+      terminationGracePeriodSeconds: 30
+      tolerations:
+      # Making sure that Mongo will be scheduled on dedicated nodes. These nodes are tainted and labeled by the provisioner.
+      - key: "mongo-lead"
+        operator: "Equal"
+        value: "false"
+        effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - "mongo-lead"
+      initContainers:
+        - name: waitfordns
+          image: "alpine:3.6"
+          imagePullPolicy: {{ $values.image.pullPolicy }}
+          command:
+            - /bin/sh
+            - -c
+            - "i=0; while [ $i -lt 120 ]; do ping -c1 {{ $values.service.name }}-0 && break; let i=i+1; sleep 1; done"
+      containers:
+      - name: {{ $values.service.name }}
+        image: "{{ $values.image.repository }}:{{ $chart.Version }}"
+        resources:
+{{ toYaml $values.resources | indent 12 }}
+        ports:
+        - containerPort: 27017
+        - containerPort: 28017
+        livenessProbe:
+          tcpSocket:
+            port: 27017
+          initialDelaySeconds: 60
+        volumeMounts:
+        - name: mongo-persistent-0
+          mountPath: /data/db
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/bash", "-c", 'printf "use admin\ndb.shutdownServer()" | mongo']
+      volumes:
+      - name: mongo-persistent-0
+        persistentVolumeClaim:
+          claimName: "{{ $values.service.name }}-pvc-0"
+
+
+{{- range tuple "1" "2" }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $values.service.name }}-{{ . }}
+  labels:
+    chart: "{{ $chart.Name | trunc 63 }}"
+    chartVersion: "{{ $chart.Version | trunc 63 }}"
+    visualize: "true"
+    app: {{ $values.service.name }}-{{ . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ $values.service.name }}-{{ . }}
+  template:
+    metadata:
+      labels:
+        app: {{ $values.service.name }}-{{ . }}
+    spec:
+      terminationGracePeriodSeconds: 30
+      tolerations:
+      # Making sure that Mongo will be scheduled on dedicated nodes. These nodes are tainted and labeled by the provisioner.
+      - key: "mongo"
+        operator: "Equal"
+        value: "false"
+        effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - "mongo"
+      initContainers:
+        - name: waitfordns
+          image: "alpine:3.6"
+          imagePullPolicy: {{ $values.image.pullPolicy }}
+          command:
+            - /bin/sh
+            - -c
+            - "i=0; while [ $i -lt 120 ]; do ping -c1 {{ $values.service.name }}-{{ . }} && break; let i=i+1; sleep 1; done"
+      containers:
+      - name: {{ $values.service.name }}
+        image: "{{ $values.image.repository }}:{{ $chart.Version }}"
+        resources:
+{{ toYaml $values.resources | indent 12 }}
+        ports:
+        - containerPort: 27017
+        - containerPort: 28017
+        livenessProbe:
+          tcpSocket:
+            port: 27017
+          initialDelaySeconds: 60
+        volumeMounts:
+        - name: mongo-persistent-{{ . }}
+          mountPath: /data/db
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/bash", "-c", 'printf "use admin\ndb.shutdownServer()" | mongo']
+      volumes:
+      - name: mongo-persistent-{{ . }}
+        persistentVolumeClaim:
+          claimName: "{{ $values.service.name }}-pvc-{{ . }}"
+{{- end }}
+
+{{- else }}
+
 {{- range tuple "0" "1" "2" }}
 ---
 apiVersion: apps/v1
@@ -69,4 +212,6 @@ spec:
       - name: mongo-persistent-{{ . }}
         persistentVolumeClaim:
           claimName: "{{ $values.service.name }}-pvc-{{ . }}"
+{{- end }}
+
 {{- end }}
