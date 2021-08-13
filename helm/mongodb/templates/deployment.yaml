@@ -26,7 +26,7 @@ spec:
       terminationGracePeriodSeconds: 30
       tolerations:
       # Making sure that Mongo will be scheduled on dedicated nodes. These nodes are tainted and labeled by the provisioner.
-      - key: "mongo-lead"
+      - key: "mongo"
         operator: "Equal"
         value: "false"
         effect: "NoSchedule"
