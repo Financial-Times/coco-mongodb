@@ -38,20 +38,6 @@ No
 
 No
 
-<!-- Placeholder - remove HTML comment markers to activate
-## Can Download Personal Data
-Choose Yes or No
-
-...or delete this placeholder if not applicable to this system
--->
-
-<!-- Placeholder - remove HTML comment markers to activate
-## Can Contact Individuals
-Choose Yes or No
-
-...or delete this placeholder if not applicable to this system
--->
-
 ## Failover Architecture Type
 
 ActivePassive
@@ -77,7 +63,9 @@ Manual
 
 ## Data Recovery Details
 
-Restore from EBS snapshot
+For a manual recovery follow the restore procedure described in [confluence](https://financialtimes.atlassian.net/wiki/spaces/CONTENT/pages/3091955966/MongoDB+Backup+and+Restore+procedures#MongoDBBackupandRestoreprocedures-RestoreProcedure)
+
+scheduled backups are being done via [mongo-hot-backup](https://github.com/Financial-Times/mongo-hot-backup) periodically.
 
 ## Release Process Type
 
@@ -92,14 +80,6 @@ Manual
 Manual failover is needed when a new version of the service is deployed to production (both publishing and delivery cluster).
 Otherwise, an automated failover is going to take place when releasing to publishing cluster.
 For more details about failover process please see: <https://github.com/Financial-Times/upp-docs/tree/master/failover-guides/>
-
-<!-- Placeholder - remove HTML comment markers to activate
-## Heroku Pipeline Name
-Enter descriptive text satisfying the following:
-This is the name of the Heroku pipeline for this system. If you don't have a pipeline, this is the name of the app in Heroku. A pipeline is a group of Heroku apps that share the same codebase where each app in a pipeline represents the different stages in a continuous delivery workflow, i.e. staging, production.
-
-...or delete this placeholder if not applicable to this system
--->
 
 ## Key Management Process Type
 
