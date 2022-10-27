@@ -9,10 +9,9 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
+  volumeName: "{{ $values.service.name}}-{{ . }}-vol"
+  storageClassName: ebs-sc
   resources:
     requests:
       storage: {{ $values.storageGi }}
-  selector:
-    matchLabels:
-      provisioned-for: {{ $values.service.name}}-{{ . }}
 {{- end }}
