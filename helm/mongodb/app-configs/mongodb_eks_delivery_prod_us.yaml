@@ -1,4 +1,4 @@
 service:
   name: mongodb
 
-leader: false
+leader: true
